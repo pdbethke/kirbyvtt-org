@@ -59,5 +59,9 @@ test('Foundry is credited rather than disparaged', async ({ page }) => {
   // string. Assert the specific credit the copy actually makes instead:
   // that's a claim losing the credit sentence, or replacing it with
   // something dismissive, will actually break.
-  await expect(main).toContainText('Foundry VTT already has good HERO systems');
+  // Copy reworded 2026-08-23; the credit itself is what must survive, so this
+  // pins the substance rather than one phrasing. Losing the sentence, or
+  // replacing it with something dismissive, still breaks the test.
+  await expect(main).toContainText('built by folks who know this game');
+  await expect(main).toContainText('the community is better for them');
 });

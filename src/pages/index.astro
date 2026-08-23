@@ -20,11 +20,40 @@ import NotifyForm from '../components/NotifyForm.astro';
     <SiteHeader />
     <main>
       <section id="hero">
-        <h1>A HERO System virtual tabletop whose numbers are provably right.</h1>
+        <p class="kicker">Building the VTT the HERO System deserves, one
+          brick at a time.</p>
+        <h1>A virtual tabletop that speaks HERO.</h1>
+        {/*
+          Local assets only — no CDN, no remote host. A guard test walks every
+          built page and fails on any external request. width/height are set so
+          the browser reserves the space and the text below does not jump once
+          the art loads. eager + high fetchpriority because it is above the fold.
+        */}
+        <picture class="hero-art">
+          <source
+            type="image/webp"
+            srcset="/img/kirby-hero-700.webp 700w,
+                    /img/kirby-hero-1100.webp 1100w,
+                    /img/kirby-hero-1600.webp 1600w"
+            sizes="(max-width: 780px) 100vw, 720px" />
+          <img
+            src="/img/kirby-hero-1100.jpg"
+            srcset="/img/kirby-hero-700.jpg 700w,
+                    /img/kirby-hero-1100.jpg 1100w,
+                    /img/kirby-hero-1600.jpg 1600w"
+            sizes="(max-width: 780px) 100vw, 720px"
+            width="2816" height="1536"
+            loading="eager" fetchpriority="high"
+            alt="A comic panel in the Kirby style: a caped, armoured figure
+                 lettered KV bursting forward through exploding stars and
+                 crackling energy, with KRAKKOOM, ZAP and POW across the
+                 frame, titled Kirby VTT." />
+        </picture>
         <p>
-          Kirby plays HERO 6E characters with a cost and combat engine that is
-          checked, object by object, against Hero Designer itself &mdash; not
-          asserted, measured.
+          I've been playing HERO since 1981 and never stopped. Kirby is the
+          tabletop I've always wanted for it &mdash; one that knows what an
+          Entangle does, what a Multipower slot costs, and why your DCV
+          changed when you moved.
         </p>
         <NotifyForm />
       </section>
@@ -32,28 +61,21 @@ import NotifyForm from '../components/NotifyForm.astro';
       <section id="why">
         <h2>Why this exists</h2>
         <p>
-          Hero Designer gets the maths right. That is the whole reason it is
-          the reference: thirty years of HERO System rules, encoded and
-          trusted at thousands of tables. Anything that wants to sit beside a
-          character HD produced has to meet that standard, and the only
-          honest way to know whether it does is to check every number against
-          it.
+          HERO isn't D&amp;D, and it shows. The good virtual tabletops are
+          built around a different game, with HERO fitted on afterwards by
+          people doing generous work under real constraints &mdash; Foundry's
+          HERO systems are built by folks who know this game, and the
+          community is better for them.
         </p>
         <p>
-          So we did, and it found our own bugs. An early version of the
-          costing engine truncated 44.5 to 44 &mdash; it printed
-          &ldquo;44&rdquo; on a sheet right beside text reading &ldquo;(45
-          Active Points)&rdquo;. Nobody catches that in review. You catch it
-          mid-session, when a player asks why their number doesn't match and
-          the table stops to work out which one is wrong. Checking against
-          Hero Designer, object by object, is what surfaced it.
+          Kirby starts from the other end: HERO first, everything else after.
+          Surfaces have PD and ED. Elevation and concealment change OCV and
+          DCV. Combat is HERO's, not an approximation of it.
         </p>
         <p>
-          Foundry VTT already has good HERO systems, built by people who know
-          the game. Kirby isn't trying to out-Foundry Foundry &mdash; it's a
-          different bet: an engine whose every cost and combat number is
-          validated against Hero Designer, so a character means the same thing
-          in both.
+          Hero Designer is the reference the whole thing is measured against,
+          because it's the tool this community already builds in and trusts.
+          A character should mean the same thing in both.
         </p>
       </section>
 
@@ -95,12 +117,12 @@ import NotifyForm from '../components/NotifyForm.astro';
       </section>
 
       <section id="yours">
-        <h2>Yours to keep</h2>
+        <h2>Your characters stay yours</h2>
         <p>
-          Kirby reads a <code>.hdc</code> and writes a <code>.hdc</code> back
-          out unchanged in everything it doesn't touch. Nothing about your
-          characters is rewritten into a proprietary format you can't get
-          back out.
+          Kirby reads the <code>.hdc</code> files you already have and writes
+          them back unchanged. Build in Hero Designer the way you always have
+          &mdash; Kirby is where you play them. Nothing gets rewritten into a
+          format you can't get back out of.
         </p>
         <p>
           Self-hostable, and source-available, free for personal use, under

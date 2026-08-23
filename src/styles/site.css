@@ -205,3 +205,18 @@ main > article blockquote {
   border-left: 3px solid var(--rule);
   color: var(--ink-muted);
 }
+
+/* Hero artwork. Full-bleed to the content column, with a hairline so it reads
+   as a printed panel rather than a floating image. No shadow, no rounding
+   beyond a hair — the art already carries all the personality needed. */
+.hero-art {
+  display: block;
+  margin: 1.75rem 0 2rem;
+}
+.hero-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
