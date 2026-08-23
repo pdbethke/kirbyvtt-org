@@ -1,6 +1,132 @@
 ---
 // SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0
 import '../styles/tokens.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import NotifyForm from '../components/NotifyForm.astro';
 ---
-<html lang="en"><head><meta charset="utf-8" /><title>Kirby</title></head>
-<body><h1>Kirby</h1></body></html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kirby — a HERO System virtual tabletop</title>
+    <meta
+      name="description"
+      content="A HERO System virtual tabletop whose numbers are provably right."
+    />
+  </head>
+  <body>
+    <SiteHeader />
+    <main>
+      <section id="hero">
+        <h1>A HERO System virtual tabletop whose numbers are provably right.</h1>
+        <p>
+          Kirby plays HERO 6E characters with a cost and combat engine that is
+          checked, object by object, against Hero Designer itself &mdash; not
+          asserted, measured.
+        </p>
+        <NotifyForm />
+      </section>
+
+      <section id="why">
+        <h2>Why this exists</h2>
+        <p>
+          A cost engine that truncates 44.5 to 44 will print &ldquo;44&rdquo;
+          on a character sheet right beside text that reads &ldquo;(45 Active
+          Points)&rdquo;. Nobody catches that in review. You catch it mid-session,
+          when a player asks why their number doesn't match the sheet and the
+          table stops to figure out which one is wrong. A number that is
+          nearly right is worse than useless on a character sheet, because the
+          gap only shows up when it costs you the most.
+        </p>
+        <p>
+          Foundry VTT already has good HERO systems, built by people who know
+          the game. Kirby isn't trying to out-Foundry Foundry &mdash; it's a
+          different bet: an engine whose every cost and combat number is
+          validated against Hero Designer, the tool GMs already trust to get
+          the math right.
+        </p>
+      </section>
+
+      <section id="today">
+        <h2>What works today</h2>
+        <p>Three small, independent engines, each installable on its own.</p>
+        <article>
+          <h3>kirby-cost</h3>
+          <p>
+            <code>pip install kirby-cost</code>
+          </p>
+          <p>
+            Reads a HERO 6E build and costs it. Validated against Hero
+            Designer: 656 of 656 characters match, every object and every
+            character total.
+          </p>
+        </article>
+        <article>
+          <h3>kirby-sheet</h3>
+          <p>
+            <code>pip install kirby-sheet</code>
+          </p>
+          <p>
+            Reads a <code>.hdc</code> and writes JSON, plain text, HTML, PDF,
+            or a <code>.hdc</code> back out.
+          </p>
+        </article>
+        <article>
+          <h3>kirby-combat</h3>
+          <p>
+            <code>pip install kirby-combat</code>
+          </p>
+          <p>
+            A pure-Python HERO 6E combat engine. Zero runtime dependencies,
+            905 tests.
+          </p>
+        </article>
+      </section>
+
+      <section id="yours">
+        <h2>Yours to keep</h2>
+        <p>
+          Kirby reads a <code>.hdc</code> and writes a <code>.hdc</code> back
+          out unchanged in everything it doesn't touch. Nothing about your
+          characters is rewritten into a proprietary format you can't get
+          back out.
+        </p>
+        <p>
+          Self-hostable, and source-available, free for personal use, under
+          PolyForm Noncommercial 1.0.0. Read the code, run it on your own
+          machine, keep your own copy of your own characters.
+        </p>
+      </section>
+
+      <section id="needs">
+        <h2>What you still need</h2>
+        <p>
+          <strong>Hero Designer and your own rulebooks are required.</strong>
+          Kirby ships no templates, no rules text and no character data. It
+          will not start without a <code>.hdt</code> from a real Hero
+          Designer installation &mdash; point it at your own, and it exits
+          with an error telling you so if you haven't.
+        </p>
+      </section>
+
+      <section id="roadmap">
+        <h2>Roadmap, honestly</h2>
+        <p>
+          Kirby plays characters; it does not create them. Character creation
+          stays in Hero Designer, on purpose &mdash; that's the tool built for
+          it, and duplicating it isn't the goal here.
+        </p>
+        <p>
+          The three engines above are the whole of what's built. The table
+          experience they're meant to serve &mdash; a running combat tracker
+          in front of players, not just a library underneath one &mdash; is
+          not built yet. That's next, and it's the reason for the notify
+          form above: there's nothing to demo before there's something worth
+          demoing.
+        </p>
+      </section>
+    </main>
+    <SiteFooter />
+  </body>
+</html>
