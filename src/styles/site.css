@@ -220,3 +220,12 @@ main > article blockquote {
   border: 1px solid var(--rule);
   border-radius: 2px;
 }
+
+/* The honesty line under the hero. Quieter than the body but not hidden —
+   it exists so nobody arrives expecting to run a session tonight. */
+.status {
+  font-size: 0.95rem;
+  border-left: 2px solid var(--accent);
+  padding-left: 0.9rem;
+  margin-top: 1.1rem;
+}

@@ -65,3 +65,12 @@ test('Foundry is credited rather than disparaged', async ({ page }) => {
   await expect(main).toContainText('built by folks who know this game');
   await expect(main).toContainText('the community is better for them');
 });
+
+test('the page does not present Kirby as finished', async ({ page }) => {
+  await page.goto('/');
+  // The engines ship; the tabletop does not. A visitor must not arrive
+  // thinking they can run a session tonight — that is the fastest way to
+  // burn the goodwill the notify form is asking for.
+  await expect(page.locator('section#hero')).toContainText("isn't finished");
+  await expect(page.locator('h1')).toContainText('Building');
+});
