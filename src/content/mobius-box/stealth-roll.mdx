@@ -1,0 +1,37 @@
+---
+title: "Eleven, fourteen, and which one to trust"
+description: "A test asserted a Stealth roll of 11. The engine said 14. Working out which one had evidence behind it."
+pubDate: 2026-08-19
+draft: false
+---
+
+{/* SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0 */}
+
+A test in the combat suite asserted that a character's Stealth roll was 11.
+The engine computed 14. Both numbers looked plausible enough that the honest
+first move wasn't to fix either one &mdash; it was to find out which one had
+evidence behind it.
+
+The character in question has DEX 25. HERO 6E1 p.57 gives the skill roll
+formula as `9 + (CHAR/5)`, where CHAR is the governing characteristic. For
+DEX 25 that's `9 + 25/5`, which is `9 + 5`, which is 14. Eleven is the right
+answer too &mdash; for a character with DEX 10, where `9 + 10/5` is `9 + 2`.
+Someone, at some point, wrote the test against a different character, or
+against a mental model of "a typical roll," and it stuck. Eleven had been
+sitting in that assertion for months, quietly wrong, because nothing forced
+anyone to open the rulebook and check.
+
+Which is the actual point. A validated engine and a hand-written expectation
+are not peers. One of them is checked against a source of truth every time
+the suite runs; the other is checked against nothing but whoever typed it
+and however carefully they were paying attention that day. When the two
+disagree, the question isn't "which one do I already believe" &mdash; it's
+"which one has a citation." The engine's answer traced back to a page
+number and a formula. The test's answer traced back to nothing anyone could
+find. That's not a tie.
+
+The fix was small: correct the test, leave a comment with the page reference
+so the next person doesn't have to re-derive it, and move on. The lesson
+was bigger than the fix. A test failing doesn't tell you which side is
+wrong. It tells you two things disagree, and disagreement is a prompt to go
+check a book, not a verdict.

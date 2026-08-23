@@ -1,0 +1,42 @@
+---
+title: "Support was never redundant"
+description: "A demo of destructible terrain narrated that a mezzanine would survive losing one column. The engine collapsed it anyway, and the narration turned out to be the bug."
+pubDate: 2026-08-21
+draft: false
+---
+
+{/* SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0 */}
+
+Writing a demo of destructible terrain, the plan was to narrate something
+satisfying: two columns hold up a mezzanine, a character destroys one of
+them, and the mezzanine holds &mdash; because the other column is still
+there. "Destroy one column and the mezzanine still has the other," the
+narration said. Then the demo ran, and the engine collapsed the mezzanine
+anyway.
+
+The narration wasn't decoration. It was a claim about behavior, written down
+where it could be checked, and the check failed. Support wasn't redundant
+the way the demo assumed. Losing any supporter collapsed the element it
+held up, which meant two columns behaved exactly like one: destroy either
+and the mezzanine came down. The model had no concept of "enough support
+remaining," only "any support present." A structure with two legs was, as
+far as the engine was concerned, exactly as fragile as a structure with
+one.
+
+None of the existing tests had caught this, because none of them had tried
+to narrate the redundant case. They exercised single supporters failing
+and single supporters holding, which is a different question from whether
+a second supporter changes the outcome. The gap wasn't in coverage of
+outcomes; it was in coverage of a specific structural claim that only
+showed up once someone tried to say, out loud, what should happen and why.
+
+That's the general shape of it: an example forces a narration, and a
+narration is a falsifiable claim in a way that a green test suite alone
+isn't. Writing "the mezzanine still has the other column" and watching it
+turn out false was more informative than any number of passing assertions
+about columns in isolation.
+
+The fix models each supported element with its own support requirement,
+defaulting to needing just one remaining supporter, so a two-column
+mezzanine now genuinely tolerates losing either column on its own. The
+example that broke first is the one that now demonstrates it works.

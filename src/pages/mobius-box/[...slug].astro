@@ -1,0 +1,39 @@
+---
+// SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0
+import { getCollection, render } from 'astro:content';
+import '../../styles/tokens.css';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('mobiusBox', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{post.data.title} — Mobius Box — Kirby</title>
+    <meta name="description" content={post.data.description} />
+  </head>
+  <body>
+    <SiteHeader />
+    <main>
+      <article>
+        <h1>{post.data.title}</h1>
+        <time datetime={post.data.pubDate.toISOString()}>
+          {post.data.pubDate.toISOString().slice(0, 10)}
+        </time>
+        <Content />
+      </article>
+    </main>
+    <SiteFooter />
+  </body>
+</html>

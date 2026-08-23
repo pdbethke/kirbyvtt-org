@@ -1,0 +1,42 @@
+---
+title: "What parity means, and what it doesn't"
+description: "kirby-cost is validated against Hero Designer on 656 of 656 characters. What that claim covers, and why the denominator matters more than the percentage."
+pubDate: 2026-08-23
+draft: false
+---
+
+{/* SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0 */}
+
+kirby-cost is validated against Hero Designer on 656 of 656 characters:
+every value the corpus compares matches, on every object and on every
+character total. That's the headline number, and it's accurate. It's also
+easy to over-read, so it's worth being precise about what it does and
+doesn't claim.
+
+It claims that for the characters in the corpus, the two engines agree.
+It does not claim that the corpus contains every shape a HERO 6E build can
+take. The corpus grew twice over the life of this project, and both times
+it grew because a character came along that exercised something the
+existing set hadn't &mdash; a framework, a modifier combination, a template
+wrinkle. Each growth pushed the denominator up, and the percentage stayed
+at 100 only because each new case got fixed before it was allowed to count.
+A parity number without knowing how many characters it was measured
+against, and how they were chosen, isn't something you can actually check
+&mdash; it's just a number someone is asking you to trust.
+
+The instrument matters as much as the sample. "Validated against Hero
+Designer" means validated against a specific oracle: a reference
+implementation that itself has been wrong and been corrected. For four
+months, that oracle silently ignored the template a character had declared
+and costed it as if no template were in play. Every comparison run during
+that window was comparing against a quietly broken reference, and every
+"match" from that period inherited the same blind spot. Finding it meant
+distrusting the oracle's silence, not just the engine's output &mdash; a
+mismatch is a signal something is wrong, but which side is wrong is a
+separate question every time.
+
+So the honest form of the claim has three parts, not one: a percentage, a
+denominator, and an instrument. 656 of 656 is real and it's the current
+state. It is also a number that has moved before, in both directions, as
+the corpus grew and as the oracle itself got fixed. Reporting it without
+the other two parts would be reporting less than what's actually known.
