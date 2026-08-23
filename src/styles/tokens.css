@@ -1,0 +1,14 @@
+/* SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0 */
+:root {
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --ink: #14151a;
+  --paper: #fbfaf7;
+  --accent: #b4272b;
+  --rule: #d9d5cc;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --ink: #ece9e3; --paper: #16171b; --rule: #33353d; }
+}
+html { font-family: var(--font-sans); color: var(--ink); background: var(--paper); }

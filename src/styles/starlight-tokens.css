@@ -1,0 +1,4 @@
+/* SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0 */
+/* Starlight customCss entry point. Reuses the site's own tokens; system
+   fonts only, no external host. Task 2 layers real Starlight theming here. */
+@import './tokens.css';

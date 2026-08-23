@@ -1,0 +1,19 @@
+{
+  "name": "kirbyvtt-org",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "astro": "ASTRO_TELEMETRY_DISABLED=1 astro",
+    "test:e2e": "npm run build && npx playwright test"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "0.41.3",
+    "astro": "7.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1"
+  }
+}
