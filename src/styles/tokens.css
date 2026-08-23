@@ -4,11 +4,19 @@
     sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --ink: #14151a;
+  --ink-muted: #5c5d63;
   --paper: #fbfaf7;
+  --paper-raised: #f2f0ea;
   --accent: #b4272b;
   --rule: #d9d5cc;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --ink: #ece9e3; --paper: #16171b; --rule: #33353d; }
+  :root {
+    --ink: #ece9e3;
+    --ink-muted: #a3a3ab;
+    --paper: #16171b;
+    --paper-raised: #1e2025;
+    --rule: #33353d;
+  }
 }
 html { font-family: var(--font-sans); color: var(--ink); background: var(--paper); }

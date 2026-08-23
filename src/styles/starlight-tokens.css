@@ -1,4 +1,44 @@
 /* SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0 */
 /* Starlight customCss entry point. Reuses the site's own tokens; system
-   fonts only, no external host. Task 2 layers real Starlight theming here. */
+   fonts only, no external host. Maps Starlight's own CSS custom properties
+   onto the marketing site's tokens so moving between /docs and the
+   hand-authored pages reads as one site, not two. */
 @import './tokens.css';
+
+:root {
+  --sl-font: var(--font-sans);
+  --sl-font-mono: var(--font-mono);
+
+  --sl-color-accent: var(--accent);
+  --sl-color-accent-high: var(--accent);
+  --sl-color-text-accent: var(--accent);
+
+  --sl-color-white: var(--ink);
+  --sl-color-black: var(--paper);
+  --sl-color-gray-1: var(--ink);
+  --sl-color-gray-2: var(--ink-muted);
+  --sl-color-gray-3: var(--ink-muted);
+  --sl-color-gray-4: var(--rule);
+  --sl-color-gray-5: var(--rule);
+  --sl-color-gray-6: var(--paper-raised);
+  --sl-color-gray-7: var(--paper);
+
+  --sl-color-bg: var(--paper);
+  --sl-color-bg-nav: var(--paper);
+  --sl-color-bg-sidebar: var(--paper);
+  --sl-color-bg-inline-code: var(--paper-raised);
+  --sl-color-text: var(--ink);
+
+  --sl-content-width: 68ch;
+}
+
+/* Starlight's default palette is precomputed for its own hues; force the
+   marketing-site accent to actually win over its light/dark variants. */
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  --sl-color-text-accent: var(--accent);
+}
+
+.kirby-affiliation-notice { color: var(--ink-muted) !important; }
+
+code { font-family: var(--font-mono); }
