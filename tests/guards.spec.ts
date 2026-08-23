@@ -40,20 +40,59 @@ test('every page declares no affiliation with Hero Games', () => {
   expect(offenders, `no non-affiliation notice in: ${offenders.join(', ')}`).toEqual([]);
 });
 
-test('zero external network requests across the site', async ({ page }) => {
+// The one legitimate external host on the site: Turnstile on the notify
+// form (NotifyForm.astro posts to the Pages Function at /subscribe, which
+// verifies the token server-side — see functions/subscribe.ts). Both guards
+// below were widened from "zero external, full stop" to an explicit
+// allow-list containing exactly this host, so a *different* external host
+// sneaking in still fails the build the way it always has.
+//
+// Turnstile's runtime doesn't only call challenges.cloudflare.com itself —
+// its challenge platform runs from a random-looking subdomain of it (e.g.
+// brunhild.challenges.cloudflare.com), and it also creates blob: URLs whose
+// origin is embedded after the "blob:" scheme rather than exposed as
+// URL#hostname. isAllowedTurnstileRequest() unwraps both cases down to the
+// real hostname before checking it against the one allow-listed domain and
+// its subdomains — a different external host, blob-wrapped or not, still
+// fails this test.
+function isAllowedTurnstileRequest(rawUrl: string): boolean {
+  const unwrapped = rawUrl.startsWith('blob:') ? rawUrl.slice('blob:'.length) : rawUrl;
+  let hostname: string;
+  try {
+    hostname = new URL(unwrapped).hostname;
+  } catch {
+    return false;
+  }
+  return hostname === 'challenges.cloudflare.com' || hostname.endsWith('.challenges.cloudflare.com');
+}
+
+test('only allow-listed external network requests happen across the site', async ({ page }) => {
   const external: string[] = [];
   page.on('request', (req) => {
-    const url = new URL(req.url());
+    const rawUrl = req.url();
+    if (rawUrl.startsWith('blob:') || rawUrl.startsWith('http')) {
+      if (isAllowedTurnstileRequest(rawUrl)) return;
+    }
+    const url = new URL(rawUrl);
     if (url.hostname !== 'localhost' && url.hostname !== '127.0.0.1') {
-      external.push(req.url());
+      external.push(rawUrl);
     }
   });
   // Every route the build produced, not a hardcoded subset — a page type
   // visited by no other test (blog posts, docs other than kirby-cost, 404)
   // used to ship a remote request with a green suite.
+  //
+  // 'networkidle' rather than 'load' used to be fine because nothing on the
+  // site made background requests. The Turnstile widget on the notify form
+  // (index page) breaks that: it polls continuously by design, so
+  // 'networkidle' never fires and the test hangs to its timeout on that
+  // route. 'load' plus a short fixed settle window still catches every
+  // request fired at page-load time — which is what an unwanted external
+  // load looks like — without waiting on Turnstile's legitimate, endless
+  // background traffic.
   for (const route of builtRoutes()) {
-    await page.goto(route);
-    await page.waitForLoadState('networkidle');
+    await page.goto(route, { waitUntil: 'load' });
+    await page.waitForTimeout(1000);
   }
   expect(external, `unexpected external requests: ${external.join(', ')}`).toHaveLength(0);
 });
@@ -89,17 +128,24 @@ test('no external subresources load, and only allow-listed hosts are ever linked
   // Inverted from a banned-host denylist to an ALLOW-LIST: any absolute
   // http(s) URL not on this short list fails, whether or not it happens to
   // match a name someone already thought to ban. Subresources (things the
-  // browser fetches — script/img/iframe/stylesheet <link>/etc.) are never
-  // allowed to be absolute at all, even to an allow-listed host — the site
-  // ships zero external assets by design. Non-fetching references (anchor
-  // hrefs, and Astro's own `<link rel="canonical">`) may point at
-  // github.com, pypi.org or the site's own canonical domain; nothing else.
+  // browser fetches — script/img/iframe/stylesheet <link>/etc.) were
+  // previously never allowed to be absolute at all; the notify form's
+  // Turnstile widget (NotifyForm.astro) is now the one deliberate
+  // exception — its script tag loads from challenges.cloudflare.com, the
+  // one external host this allow-list admits, and the token it produces is
+  // verified server-side in functions/subscribe.ts, not trusted on its own.
+  // Non-fetching references (anchor hrefs, and Astro's own
+  // `<link rel="canonical">`) may point at github.com, pypi.org or the
+  // site's own canonical domain; nothing else.
+  const SUBRESOURCE_LOAD_ALLOW = [/^https:\/\/challenges\.cloudflare\.com\//i];
   const REFERENCE_ALLOW = [/^https:\/\/github\.com\//i, /^https:\/\/pypi\.org\//i, /^https:\/\/kirbyvtt\.org\//i];
   const offenders: string[] = [];
   for (const { path, html } of pageText()) {
     for (const { url, isLoad } of absoluteMarkupUrls(html)) {
       if (isLoad) {
-        offenders.push(`${path}: ${url} (loaded as a subresource)`);
+        if (!SUBRESOURCE_LOAD_ALLOW.some((re) => re.test(url))) {
+          offenders.push(`${path}: ${url} (loaded as a subresource, host not allow-listed)`);
+        }
       } else if (!REFERENCE_ALLOW.some((re) => re.test(url))) {
         offenders.push(`${path}: ${url} (reference, host not allow-listed)`);
       }

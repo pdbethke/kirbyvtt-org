@@ -1,6 +1,13 @@
 ---
 // SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0
-const { action = '#' } = Astro.props;
+//
+// Posts to the Cloudflare Pages Function at /subscribe (functions/subscribe.ts),
+// which verifies the Turnstile token server-side before anything is forwarded
+// anywhere. The widget below is progressive enhancement, not the guard itself —
+// a bot that skips the script and POSTs straight to /subscribe still has to
+// clear siteverify there. See functions/subscribe.ts for that check.
+const TURNSTILE_SITE_KEY = '0x4AAAAAAEZesQat8_1YAStk';
+const { action = '/subscribe' } = Astro.props;
 ---
 <form data-notify method="post" action={action}>
   <label for="email">Tell me when it's ready</label>
@@ -9,6 +16,15 @@ const { action = '#' } = Astro.props;
            placeholder="you@example.com" autocomplete="email" />
     <button type="submit">Notify me</button>
   </div>
+
+  {/*
+    Turnstile widget. Loaded with defer so it never blocks the form from
+    rendering or the submit button from being usable. If the script fails to
+    load (network hiccup, blocked request), this div just stays empty — the
+    form still POSTs normally, and the Function rejects it server-side for
+    lacking a token. The submit button is never hidden behind the widget.
+  */}
+  <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>
 
   {/*
     Honeypot. Undiscriminating bots fill every field they find; a person never
@@ -36,6 +52,13 @@ const { action = '#' } = Astro.props;
   <p class="fine">No pitch, no schedule promises. One email when there is
     something to use.</p>
 </form>
+
+{/*
+  Turnstile's own script, deferred so it never blocks page render or the
+  submit button. This is the one deliberate, allow-listed external load on
+  the site — see tests/guards.spec.ts for the allow-list that names it.
+*/}
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <style>
   /* Off-screen rather than display:none — see the note above. */
