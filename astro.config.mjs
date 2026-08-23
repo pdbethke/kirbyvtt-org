@@ -11,7 +11,7 @@ export default defineConfig({
       description:
         'The engines behind Kirby: kirby-cost, kirby-sheet and kirby-combat.',
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/pdbethke' },
+        { icon: 'github', label: 'kirby-cost on GitHub', href: 'https://github.com/pdbethke/kirby-cost' },
       ],
       // Starlight ships Pagefind (local search, no network calls) and system
       // fonts by default. Do not add a font <link> — tests/guards.spec.ts
