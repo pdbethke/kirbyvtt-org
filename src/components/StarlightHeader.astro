@@ -1,7 +1,37 @@
 ---
 // SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0
-// Placeholder passthrough of Starlight's default Header. Task 2 replaces
-// this with the real marketing header.
+// Wraps Starlight's own Header (search, theme toggle, social links) with the
+// marketing nav, so /docs isn't a dead end: / and /mobius-box/ stay
+// reachable from inside the docs chrome.
 import Default from '@astrojs/starlight/components/Header.astro';
 ---
-<Default {...Astro.props}><slot /></Default>
+
+<div class="kirby-docs-header">
+  <nav class="marketing-nav" aria-label="Site">
+    <a href="/">Kirby</a>
+    <a href="/mobius-box/">Mobius Box</a>
+  </nav>
+  <Default {...Astro.props}><slot /></Default>
+</div>
+
+<style>
+  .kirby-docs-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+  }
+  .marketing-nav {
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+  .marketing-nav a {
+    color: var(--sl-color-text);
+    text-decoration: none;
+    font-size: var(--sl-text-sm);
+  }
+  .marketing-nav a:hover {
+    color: var(--sl-color-text-accent);
+  }
+</style>

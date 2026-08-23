@@ -29,14 +29,15 @@ export default defineConfig({
             { label: 'Mobius Box', link: '/mobius-box/' },
           ],
         },
-        // NOTE: `link` rather than `slug` deliberately — Starlight 0.41.3
-        // validates a `slug` entry against the docs collection at build time
-        // and throws a fatal AstroError if it doesn't resolve yet. Task 4
-        // creates these pages; `link` points at the same eventual URL
-        // without requiring the entry to exist now (see task-1-report.md).
-        { label: 'kirby-cost', link: '/docs/kirby-cost/' },
-        { label: 'kirby-sheet', link: '/docs/kirby-sheet/' },
-        { label: 'kirby-combat', link: '/docs/kirby-combat/' },
+        // `slug` restores build-time validation: Starlight 0.41.3 throws a
+        // fatal AstroError if a sidebar `slug` entry doesn't resolve against
+        // the docs collection, catching a renamed or deleted page at build
+        // time instead of leaving a silently dead sidebar link. Files live
+        // at src/content/docs/docs/<name>.md, so the slug Starlight resolves
+        // is `docs/<name>` (see task-4-report.md).
+        { label: 'kirby-cost', slug: 'docs/kirby-cost' },
+        { label: 'kirby-sheet', slug: 'docs/kirby-sheet' },
+        { label: 'kirby-combat', slug: 'docs/kirby-combat' },
       ],
     }),
   ],
