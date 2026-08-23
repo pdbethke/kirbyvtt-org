@@ -7,11 +7,15 @@ import Default from '@astrojs/starlight/components/Header.astro';
 ---
 
 <div class="kirby-docs-header">
+  <Default {...Astro.props}><slot /></Default>
+  <!-- After Starlight's header, not before it: Starlight's own SiteTitle is
+       the "Kirby" lockup, so putting a second "Kirby" link ahead of it made
+       the bar read "Kirby  Mobius Box  Kirby". Home is reachable from the
+       lockup itself, so this nav only needs the routes Starlight lacks. -->
   <nav class="marketing-nav" aria-label="Site">
-    <a href="/">Kirby</a>
+    <a href="/">Home</a>
     <a href="/mobius-box/">Mobius Box</a>
   </nav>
-  <Default {...Astro.props}><slot /></Default>
 </div>
 
 <style>
@@ -25,6 +29,7 @@ import Default from '@astrojs/starlight/components/Header.astro';
     display: flex;
     gap: 1rem;
     flex-shrink: 0;
+    margin-inline-start: auto;
   }
   .marketing-nav a {
     color: var(--sl-color-text);
