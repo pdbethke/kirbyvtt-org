@@ -32,3 +32,30 @@ test('no horizontal overflow at mobile width', async ({ page }) => {
   );
   expect(overflow).toBeLessThanOrEqual(0);
 });
+
+// --- honeypot ---------------------------------------------------------------
+
+test('the notify form carries a honeypot that no person can reach', async ({ page }) => {
+  await page.goto('/');
+  const hp = page.locator('form[data-notify] input[name="website"]');
+  await expect(hp).toHaveCount(1);
+  // Present in the DOM but not perceivable. NOT asserted with
+  // `not.toBeInViewport()` — that passes for anything merely below the fold,
+  // so it stayed green when the field was made visible. Assert the geometry
+  // instead: the wrapper must sit outside the document, which is the actual
+  // mechanism doing the hiding.
+  const box = await hp.boundingBox();
+  expect(box, 'honeypot should still be laid out, just off-screen').not.toBeNull();
+  expect(box!.x + box!.width, `honeypot is on-screen at x=${box!.x}`).toBeLessThan(0);
+  await expect(hp).toHaveAttribute('tabindex', '-1');
+  await expect(hp).toHaveAttribute('autocomplete', 'off');
+});
+
+test('the honeypot is not the field a person types into', async ({ page }) => {
+  await page.goto('/');
+  // The real control must still be reachable and focusable.
+  const email = page.locator('form[data-notify] input[type="email"]');
+  await expect(email).toBeVisible();
+  await email.fill('someone@example.com');
+  await expect(email).toHaveValue('someone@example.com');
+});

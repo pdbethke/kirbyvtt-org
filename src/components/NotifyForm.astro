@@ -9,6 +9,41 @@ const { action = '#' } = Astro.props;
            placeholder="you@example.com" autocomplete="email" />
     <button type="submit">Notify me</button>
   </div>
+
+  {/*
+    Honeypot. Undiscriminating bots fill every field they find; a person never
+    sees this one, so anything arriving with it populated can be dropped.
+
+    Named "website" rather than anything resembling a trap, because the name is
+    the bait. Hidden with an off-screen wrapper rather than `type="hidden"` or
+    `display: none` — both are trivially detected and skipped by better bots,
+    while an off-screen field looks real to a form parser.
+
+    tabindex="-1" and autocomplete="off" keep it away from keyboard users and
+    password managers, and aria-hidden keeps it out of the accessibility tree,
+    so it costs a screen-reader user nothing.
+
+    This is a filter, not a wall: it stops the volume, not a targeted scraper.
+    The defence that protects the LIST is double opt-in at the mail provider —
+    a bot address never confirms.
+  */}
+  <div class="hp" aria-hidden="true">
+    <label for="website">Leave this field empty</label>
+    <input id="website" name="website" type="text"
+           tabindex="-1" autocomplete="off" />
+  </div>
+
   <p class="fine">No pitch, no schedule promises. One email when there is
     something to use.</p>
 </form>
+
+<style>
+  /* Off-screen rather than display:none — see the note above. */
+  .hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>
