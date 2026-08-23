@@ -9,9 +9,34 @@ test('each engine has a docs page', async ({ page }) => {
   }
 });
 
-test('docs is not a navigation dead end', async ({ page }) => {
-  await page.goto('/docs/kirby-cost/');
-  // The marketing nav is present inside the docs chrome.
+// Starlight's sidebar (astro.config.mjs's "Site" group) already carries
+// links to `/` and `/mobius-box/`, so a desktop-viewport check alone cannot
+// tell the marketing nav in StarlightHeader.astro apart from the sidebar —
+// both satisfy it. Below Starlight's md breakpoint the sidebar is
+// `visibility: hidden` until a menu button is toggled, so that's the width
+// where the Header's own nav is load-bearing; the two tests below cover
+// both widths and are named so the distinction is obvious.
+//
+// kirby-sheet, not kirby-cost, is used here: kirby-cost sits immediately
+// after "Mobius Box" in the sidebar order, so Starlight's auto-generated
+// prev/next pagination footer on that page alone renders an
+// `a[href="/mobius-box/"]` too — a third confounding surface. kirby-sheet's
+// pagination neighbors are kirby-cost and kirby-combat, so it isn't
+// confounded by the sidebar's page order.
+test('the sidebar provides an escape route on desktop', async ({ page }) => {
+  await page.goto('/docs/kirby-sheet/');
+  await expect(page.locator('a[href="/mobius-box/"]').first()).toBeVisible();
+  await page.locator('a[href="/"]').first().click();
+  await expect(page.locator('section#hero')).toBeVisible();
+});
+
+test('the header provides one when the sidebar is collapsed', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/docs/kirby-sheet/');
+  // Starlight's sidebar collapses behind a menu toggle below its md
+  // breakpoint; the Header's marketing nav is not gated behind that toggle
+  // (it carries no responsive sl-hidden/md:sl-flex classes), so it must be
+  // directly visible without opening anything.
   await expect(page.locator('a[href="/mobius-box/"]').first()).toBeVisible();
   await page.locator('a[href="/"]').first().click();
   await expect(page.locator('section#hero')).toBeVisible();
