@@ -20,6 +20,7 @@ export default defineConfig({
       components: {
         SiteTitle: './src/components/StarlightSiteTitle.astro',
         Header: './src/components/StarlightHeader.astro',
+        Footer: './src/components/StarlightFooter.astro',
       },
       sidebar: [
         {

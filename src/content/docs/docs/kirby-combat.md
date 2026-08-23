@@ -15,8 +15,9 @@ Presence attacks.
 pip install kirby-combat
 ```
 
-kirby-combat requires a Hero Designer installation and your own rulebooks.
-It ships no templates, no rules text, and no Hero Games content.
+kirby-combat needs no Hero Designer installation and no character file —
+combatants are plain Python objects. It ships no rules text and no Hero
+Games content; the numbers still come from your own rulebooks.
 
 ## Source
 

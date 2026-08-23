@@ -14,6 +14,12 @@ again.
 pip install kirby-sheet
 ```
 
+PDF output needs the optional `pdf` extra:
+
+```sh
+pip install "kirby-sheet[pdf]"
+```
+
 kirby-sheet requires a Hero Designer installation and your own rulebooks. It
 ships no templates, no rules text, and no Hero Games content.
 

@@ -23,10 +23,14 @@ test('the six sections are present and in order', async ({ page }) => {
 
 test('what works today names all three engines with install commands', async ({ page }) => {
   const today = page.locator('section#today');
+  // "pip install" once, asserted separately from the three package names,
+  // was satisfiable by deleting two of the three install blocks — the
+  // package names still appear in the <h3>s regardless. Assert each
+  // package's own install command instead, so losing any one of the three
+  // fails this test specifically.
   for (const pkg of ['kirby-cost', 'kirby-sheet', 'kirby-combat']) {
-    await expect(today).toContainText(pkg);
+    await expect(today).toContainText(`pip install ${pkg}`);
   }
-  await expect(today).toContainText('pip install');
 });
 
 test('Hero Designer is stated as a requirement, high up', async ({ page }) => {
@@ -50,6 +54,10 @@ test('the trademark notice names DOJ, Inc.', async ({ page }) => {
 
 test('Foundry is credited rather than disparaged', async ({ page }) => {
   const main = page.locator('main');
-  await expect(main).toContainText('Foundry');
-  await expect(main).not.toContainText(/foundry is (bad|worse|inferior)/i);
+  // The old negative half, `not.toContainText(/foundry is (bad|worse|inferior)/i)`,
+  // could not realistically fail — no plausible edit produces that exact
+  // string. Assert the specific credit the copy actually makes instead:
+  // that's a claim losing the credit sentence, or replacing it with
+  // something dismissive, will actually break.
+  await expect(main).toContainText('Foundry VTT already has good HERO systems');
 });

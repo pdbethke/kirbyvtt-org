@@ -9,6 +9,7 @@ import NotifyForm from '../components/NotifyForm.astro';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>Kirby — a HERO System virtual tabletop</title>
     <meta
       name="description"
@@ -58,7 +59,7 @@ import NotifyForm from '../components/NotifyForm.astro';
           </p>
           <p>
             Reads a HERO 6E build and costs it. Validated against Hero
-            Designer: 656 of 656 characters match, every object and every
+            Designer: 655 of 655 characters match, every object and every
             character total.
           </p>
         </article>
@@ -69,7 +70,8 @@ import NotifyForm from '../components/NotifyForm.astro';
           </p>
           <p>
             Reads a <code>.hdc</code> and writes JSON, plain text, HTML, PDF,
-            or a <code>.hdc</code> back out.
+            or a <code>.hdc</code> back out. PDF needs the optional
+            <code>pdf</code> extra: <code>pip install "kirby-sheet[pdf]"</code>.
           </p>
         </article>
         <article>
@@ -102,11 +104,18 @@ import NotifyForm from '../components/NotifyForm.astro';
       <section id="needs">
         <h2>What you still need</h2>
         <p>
-          <strong>Hero Designer and your own rulebooks are required.</strong>
-          Kirby ships no templates, no rules text and no character data. It
-          will not start without a <code>.hdt</code> from a real Hero
-          Designer installation &mdash; point it at your own, and it exits
-          with an error telling you so if you haven't.
+          <strong>
+            Hero Designer and your own rulebooks are required for kirby-cost
+            and kirby-sheet.
+          </strong>
+          Kirby ships no templates, no rules text and no character data.
+          Reading or writing a <code>.hdc</code> will not start without a
+          <code>.hdt</code> from a real Hero Designer installation &mdash;
+          point it at your own, and it exits with an error telling you so if
+          you haven't. kirby-combat is the exception: it takes plain Python
+          objects and needs no Hero Designer installation of its own &mdash;
+          the numbers you hand it still have to come from your own
+          rulebooks.
         </p>
       </section>
 

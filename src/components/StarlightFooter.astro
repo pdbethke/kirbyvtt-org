@@ -1,0 +1,28 @@
+---
+// SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0
+// Starlight's own Footer (edit link, pagination, "Built with Starlight")
+// carries no non-affiliation notice — its docs pages had none at all. The
+// notice is a legal statement (Ruling: visible, naming DOJ, Inc. d/b/a
+// Hero Games, and the HERO System(tm) trademark) and belongs on every page,
+// not only the hand-authored marketing ones, so it's appended here rather
+// than left to a component Starlight doesn't customize per-page.
+import Default from '@astrojs/starlight/components/Footer.astro';
+---
+
+<Default {...Astro.props}><slot /></Default>
+<p class="kirby-affiliation-notice">
+  <strong>HERO System&trade;</strong> is DOJ, Inc. d/b/a Hero Games' trademark
+  for its roleplaying system. Hero Designer is &copy; DOJ, Inc. Kirby is an
+  independent work. Not affiliated with or endorsed by DOJ, Inc. d/b/a Hero
+  Games. No game rules content is distributed here.
+</p>
+
+<style>
+  .kirby-affiliation-notice {
+    max-width: var(--sl-content-width);
+    margin: 1.5rem auto 0;
+    padding: 0 0.5rem;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-3);
+  }
+</style>

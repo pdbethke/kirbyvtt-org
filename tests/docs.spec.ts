@@ -50,5 +50,16 @@ test('search is local — no external request when searching', async ({ page }) 
   });
   await page.goto('/docs/kirby-cost/');
   await page.waitForLoadState('networkidle');
-  expect(external).toHaveLength(0);
+  // The assertion above (page load makes no external request) is already
+  // covered by guards.spec.ts's site-wide request guard. What this test is
+  // *named* for — searching — has to actually open Pagefind's dialog and
+  // run a query, because Pagefind fetches its index and WASM lazily, on
+  // first interaction, not on page load. Asserting only after that
+  // interaction is what makes this test able to catch a hosted search
+  // widget (e.g. Algolia DocSearch) that loads its client from a CDN only
+  // when the dialog opens.
+  await page.click('button[data-open-modal]');
+  await page.fill('.pagefind-ui__search-input', 'cost');
+  await expect(page.locator('.pagefind-ui__result')).toHaveCount(1, { timeout: 5000 });
+  expect(external, `external requests during search: ${external.join(', ')}`).toHaveLength(0);
 });

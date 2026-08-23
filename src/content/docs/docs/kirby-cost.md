@@ -8,7 +8,7 @@ kirby-cost is the build and cost engine behind Kirby: a Python port of Hero
 Designer's own cost calculations. It reads a HERO 6E build and costs it the
 way Hero Designer does.
 
-It is validated against Hero Designer, not merely modeled on it: 656 of 656
+It is validated against Hero Designer, not merely modeled on it: 655 of 655
 characters match, on every object and on every character total.
 
 ## Install
