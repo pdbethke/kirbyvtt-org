@@ -85,3 +85,27 @@ test('a non-JSON response is reported, not rendered as a broken success', async 
 
   await expect(page.locator('form[data-notify] [data-notify-status]')).toBeVisible();
 });
+
+// ---------------------------------------------------------------------------
+// The no-JS path's landing page must actually exist.
+//
+// It didn't, on the first deploy of this fix: the Function redirected a
+// native form post to /subscribed/ and that page 404'd, so a visitor without
+// JavaScript signed up successfully and landed on "page not found". The
+// build was fine -- the page simply hadn't been built into the artifact that
+// was uploaded, and nothing connected the redirect target to a real route.
+//
+// This reads the redirect target OUT of the Function rather than hardcoding
+// it, so renaming the page without updating the Function (or the reverse)
+// fails here instead of in production.
+import { readFileSync } from 'node:fs';
+import { builtRoutes } from './dist-helpers';
+
+test('the redirect target in the Function is a page that actually got built', () => {
+  const fn = readFileSync('functions/subscribe.ts', 'utf8');
+  const match = /location:\s*['"]([^'"]+)['"]/.exec(fn);
+  expect(match, 'no redirect `location:` found in functions/subscribe.ts').toBeTruthy();
+  const target = match![1];
+  expect(builtRoutes(), `the Function redirects to ${target}, which no built page serves`)
+    .toContain(target);
+});
