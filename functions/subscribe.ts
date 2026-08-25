@@ -56,10 +56,46 @@ function jsonResponse(status: number, body: Record<string, unknown>): Response {
   });
 }
 
+/** Whether the caller is the page's fetch() rather than a native form post.
+ *
+ * The form works with or without JavaScript, and the two need different
+ * answers. fetch() sends `Accept: application/json` and renders the result
+ * in place; a native post is the BROWSER navigating, so JSON becomes the
+ * page the visitor is looking at. That is exactly what production did until
+ * 2026-08-25: a successful signup was shown `{"ok":true}` as a web page.
+ */
+function wantsJson(request: Request): boolean {
+  return (request.headers.get('Accept') || '').includes('application/json');
+}
+
+/** The success answer, in whichever form the caller can use. */
+function ok(request: Request): Response {
+  if (wantsJson(request)) return jsonResponse(200, { ok: true });
+  // 303 so the browser re-issues as GET: a reload of the confirmation page
+  // must not re-submit the form.
+  return new Response(null, { status: 303, headers: { location: '/subscribed/' } });
+}
+
+/** The failure answer. A native post gets a readable page, not a JSON blob
+ *  -- same information, in a form a browser can show a person. */
+function failed(request: Request, status: number, error: string): Response {
+  if (wantsJson(request)) return jsonResponse(status, { ok: false, error });
+  const escaped = error.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return new Response(
+    `<!doctype html><html lang="en"><head><meta charset="utf-8">` +
+      `<meta name="viewport" content="width=device-width, initial-scale=1">` +
+      `<meta name="robots" content="noindex"><title>Signup failed — Kirby</title></head>` +
+      `<body style="font-family:system-ui,sans-serif;max-width:34rem;margin:4rem auto;padding:0 1.25rem">` +
+      `<h1>That didn't go through.</h1><p>${escaped}.</p>` +
+      `<p><a href="/">Back to the front page</a> and try again.</p></body></html>`,
+    { status, headers: { 'content-type': 'text/html; charset=utf-8' } },
+  );
+}
+
 /** A 200 that looks like success to a bot that filled the honeypot, without
  * telling it anything was detected. Does no work beyond returning it. */
-function silentNoOpSuccess(): Response {
-  return jsonResponse(200, { ok: true });
+function silentNoOpSuccess(request: Request): Response {
+  return ok(request);
 }
 
 export const onRequestPost = async (context: { request: Request; env: Env }): Promise<Response> => {
@@ -69,19 +105,19 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   try {
     form = await request.formData();
   } catch {
-    return jsonResponse(400, { ok: false, error: 'invalid form submission' });
+    return failed(request, 400, 'invalid form submission');
   }
 
   // 1. Honeypot first. A filled "website" field never gets a real answer.
   const honeypot = form.get('website');
   if (typeof honeypot === 'string' && honeypot.trim() !== '') {
-    return silentNoOpSuccess();
+    return silentNoOpSuccess(request);
   }
 
   // 2. Turnstile verification. Fail closed on every branch.
   const token = form.get('cf-turnstile-response');
   if (typeof token !== 'string' || token.trim() === '') {
-    return jsonResponse(400, { ok: false, error: 'verification required' });
+    return failed(request, 400, 'verification required');
   }
 
   const verifyBody = new URLSearchParams();
@@ -110,12 +146,12 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   }
 
   if (!verified) {
-    return jsonResponse(403, { ok: false, error: 'verification failed' });
+    return failed(request, 403, 'verification failed');
   }
 
   const email = form.get('email');
   if (typeof email !== 'string' || email.trim() === '') {
-    return jsonResponse(400, { ok: false, error: 'email required' });
+    return failed(request, 400, 'email required');
   }
 
   // 3. Write to D1 — the store of record. A duplicate email is still a
@@ -139,11 +175,11 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
     if (!result.success) {
       // Never log the email address itself — only that a write failed.
       console.error('subscribe: D1 insert reported failure');
-      return jsonResponse(500, { ok: false, error: 'could not save signup' });
+      return failed(request, 500, 'could not save signup');
     }
   } catch {
     console.error('subscribe: D1 insert threw');
-    return jsonResponse(500, { ok: false, error: 'could not save signup' });
+    return failed(request, 500, 'could not save signup');
   }
 
   // 4. Forwarding to a mailing-list provider.
@@ -169,5 +205,5 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
     }
   }
 
-  return jsonResponse(200, { ok: true });
+  return ok(request);
 };

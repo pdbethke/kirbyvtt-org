@@ -1,0 +1,32 @@
+---
+// SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0
+//
+// Where functions/subscribe.ts redirects a NATIVE form post on success --
+// the path a visitor gets when the enhancing script never ran. With the
+// script, the confirmation is rendered in place and nobody comes here.
+import '../styles/site.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="robots" content="noindex" />
+    <title>You're on the list — Kirby</title>
+    <meta name="description" content="Confirmation that your email was added to the Kirby notify list." />
+  </head>
+  <body>
+    <SiteHeader />
+    <main>
+      <section>
+        <h1>You're on the list.</h1>
+        <p>One email when there's something to use. No pitch, no schedule
+          promises.</p>
+        <p><a href="/">Back to the front page</a></p>
+      </section>
+    </main>
+    <SiteFooter />
+  </body>
+</html>

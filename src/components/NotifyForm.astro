@@ -49,6 +49,14 @@ const { action = '/subscribe' } = Astro.props;
            tabindex="-1" autocomplete="off" />
   </div>
 
+  {/*
+    Where the script reports the outcome. `hidden` until there is something
+    to say, so it is not an empty box in the layout; `role="status"` with
+    `aria-live="polite"` announces the result to a screen reader without
+    stealing focus mid-typing.
+  */}
+  <p class="notify-status" data-notify-status role="status" aria-live="polite" hidden></p>
+
   <p class="fine">No pitch, no schedule promises. One email when there is
     something to use.</p>
 </form>
@@ -59,6 +67,82 @@ const { action = '/subscribe' } = Astro.props;
   the site — see tests/guards.spec.ts for the allow-list that names it.
 */}
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  // Without this, the form is a NATIVE post: the browser navigates to
+  // /subscribe and renders the Function's JSON response on screen. That is
+  // what production did until 2026-08-25 -- a visitor who signed up
+  // successfully was shown `{"ok":true}` as a web page. The signup was
+  // saved; only this was broken.
+  //
+  // Enhancement, not a requirement: if this script fails to load or throws,
+  // the form still posts natively, and functions/subscribe.ts answers a
+  // non-fetch request with a redirect to /subscribed/ rather than JSON.
+  // Both paths have to work, because either can be the one a visitor gets.
+  const form = document.querySelector('form[data-notify]');
+  const status = form && form.querySelector('[data-notify-status]');
+
+  function say(message, ok) {
+    if (!status) return;
+    status.textContent = message;
+    status.hidden = false;
+    status.dataset.state = ok ? 'ok' : 'error';
+  }
+
+  if (form && status) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = form.querySelector('button[type="submit"]');
+      if (button) button.disabled = true;
+      say('Signing you up…', true);
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          // The Function content-negotiates on this: with it, JSON comes
+          // back; without it, a redirect. Sending it is what marks this as
+          // the scripted path.
+          headers: { Accept: 'application/json' },
+        });
+
+        // A non-JSON body is a real case, not a defensive flourish: if the
+        // Function is ever undeployed, this receives the site's own 404
+        // HTML. Parsing that as JSON throws, and an unhandled throw would
+        // leave the form silent -- which to a visitor is indistinguishable
+        // from the button not working.
+        let body = null;
+        try {
+          body = await response.json();
+        } catch {
+          body = null;
+        }
+
+        if (response.ok && body && body.ok === true) {
+          say("You're on the list. One email when there's something to use.", true);
+          form.querySelectorAll('input, button').forEach((el) => { el.disabled = true; });
+          return;
+        }
+
+        const reason = (body && typeof body.error === 'string')
+          ? body.error
+          : 'something went wrong';
+        say(`Sorry — ${reason}. Please try again.`, false);
+      } catch {
+        // Offline, DNS failure, request blocked.
+        say('Sorry — could not reach the server. Please try again.', false);
+      }
+
+      if (button) button.disabled = false;
+      // Turnstile tokens are single-use. Without this reset, a second
+      // attempt after any failure reuses a spent token and is rejected for
+      // "verification required" forever -- the retry can never succeed.
+      if (window.turnstile && typeof window.turnstile.reset === 'function') {
+        window.turnstile.reset();
+      }
+    });
+  }
+</script>
 
 <style>
   /* Off-screen rather than display:none — see the note above. */

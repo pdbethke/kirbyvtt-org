@@ -156,6 +156,14 @@ form[data-notify] button {
 
 form[data-notify] button:hover { filter: brightness(1.08); }
 
+form[data-notify] .notify-status {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+form[data-notify] .notify-status[data-state='error'] { color: var(--accent); }
+form[data-notify] .notify-status[hidden] { display: none; }
+
 form[data-notify] .fine {
   margin-top: 0.6rem;
   font-size: 0.85rem;
