@@ -39,6 +39,7 @@ export default defineConfig({
         { label: 'kirby-cost', slug: 'docs/kirby-cost' },
         { label: 'kirby-sheet', slug: 'docs/kirby-sheet' },
         { label: 'kirby-combat', slug: 'docs/kirby-combat' },
+        { label: 'RAW alignment', slug: 'docs/raw-alignment' },
       ],
     }),
   ],
