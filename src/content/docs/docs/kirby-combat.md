@@ -4,10 +4,18 @@ title: kirby-combat
 description: A pure-Python HERO 6E combat engine.
 ---
 
-kirby-combat is a pure-Python HERO 6E combat engine, with zero runtime
-dependencies. It is covered by 905 tests spanning attacks, grappling,
-movement, mental combat, vehicles, mass combat, destructible terrain, and
-Presence attacks.
+kirby-combat is a pure-Python HERO 6E combat engine. It has one runtime
+dependency, [kirby-cost](https://github.com/pdbethke/kirby-cost), and that
+is deliberate: anything deriving a cost, a number of dice or a roll belongs
+there, so the combat engine acts on the numbers it is given rather than
+deriving its own.
+
+It is covered by 1,224 tests spanning attacks, grappling, movement, mental
+combat, perception, vehicles, mass combat, destructible terrain, Presence
+attacks, and the conditions that follow from them.
+
+Some of those tests are the rulebooks' own worked examples, run against the
+engine — see [RAW alignment](/docs/raw-alignment/).
 
 ## Install
 

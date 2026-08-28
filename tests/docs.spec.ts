@@ -60,6 +60,12 @@ test('search is local — no external request when searching', async ({ page }) 
   // when the dialog opens.
   await page.click('button[data-open-modal]');
   await page.fill('.pagefind-ui__search-input', 'cost');
-  await expect(page.locator('.pagefind-ui__result')).toHaveCount(1, { timeout: 5000 });
+  // At least one result, not exactly one: the count is a guard that the
+  // search actually RAN (so the external-request assertion below is
+  // meaningful), not an assertion about how many pages mention the term.
+  // Pinning it to 1 coupled this test to prose -- adding the word "cost" to
+  // a second docs page broke it while nothing about search had changed.
+  await expect(page.locator('.pagefind-ui__result').first()).toBeVisible({ timeout: 5000 });
+  expect(await page.locator('.pagefind-ui__result').count()).toBeGreaterThan(0);
   expect(external, `external requests during search: ${external.join(', ')}`).toHaveLength(0);
 });
