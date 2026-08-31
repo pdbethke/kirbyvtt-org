@@ -1,0 +1,48 @@
+---
+title: "The brick who couldn't be tied up"
+description: "Entangles quietly didn't work: a PD soak made strong characters immune, dice were summed instead of counted, and escape didn't exist. Fixing it meant reading four pages properly."
+pubDate: 2026-08-31
+draft: false
+---
+
+{/* SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0 */}
+
+An Entangle attack has been in the combat engine for a while. It rolled
+to hit, it rolled dice, it wrote a number to the database. Every test
+passed. It was also wrong three separate ways, and the only reason any of
+them surfaced is that we sat down to build the other half of the mechanic
+&mdash; what being Entangled actually does to you &mdash; and that meant
+reading the rules pages end to end instead of skimming them for formulas.
+
+The worst of the three: the code subtracted the target's PD from the
+Entangle's rolled BODY. That looks reasonable &mdash; defenses reduce
+damage, an Entangle rolls damage dice. But 6E1 p.217 says the BODY rolled
+<em>is</em> the Entangle's BODY; the target's defenses play no part.
+Under the old code, a brick with PD 25 shrugged off a 6d6 Entangle
+entirely &mdash; wrapped in nothing, ever. The book's version is better
+game design too: the brick gets caught like everyone else, he just tears
+his way out faster. Second: the dice were summed as pips rather than
+counted as normal-damage BODY, roughly tripling every Entangle that did
+land. Third: a second Entangle stacked additively, where p.217 says
+highest BODY plus one per extra.
+
+None of this was visible from the tests, because the tests were written
+against the code. It became visible against the book.
+
+The victim's side now exists, and it's all cited. Entangled means DCV 0
+and an action menu that collapses to the escape ladder (p.217): tear out
+with STR, blast the Entangle with your own attack &mdash; no attack roll
+needed, it soaks against the <em>Entangle's</em> defenses &mdash; or
+Teleport out, the one movement power an Entangle doesn't stop (p.218).
+Unless the Entangle was bought with Cannot Be Escaped With Teleportation,
+which closes that door &mdash; unless <em>your</em> Teleportation is
+Armor Piercing, which cancels it level for level (p.220). The margin
+rules from 6E2 p.126 are in as well: break out with twice the remaining
+BODY and you keep a full Phase to act.
+
+The detail I'd forgotten from thirty-odd years of play: Casual STR.
+Escaping an Entangle is the canonical use of it (6E1 p.133-134) &mdash;
+half your STR, as a Zero Phase Action. Win or lose, you still have your
+Phase. Which means a genuinely strong character doesn't spend a turn
+tied up at all: he shrugs, the webbing tears, and he was never really
+caught &mdash; exactly the way the comics draw it.

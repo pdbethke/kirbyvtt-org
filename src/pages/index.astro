@@ -4,6 +4,13 @@ import '../styles/site.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import NotifyForm from '../components/NotifyForm.astro';
+import { getCollection } from 'astro:content';
+
+// Field notes on the front page: the three newest Mobius Box posts.
+// Same draft filter and ordering as /mobius-box/ itself.
+const notes = (await getCollection('mobiusBox', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
 <html lang="en">
   <head>
@@ -115,12 +122,33 @@ import NotifyForm from '../components/NotifyForm.astro';
             <code>pip install kirby-combat</code>
           </p>
           <p>
-            A pure-Python HERO 6E combat engine, 980 tests. Its one
+            A pure-Python HERO 6E combat engine, 1,348 tests. Its one
             dependency is kirby-cost: anything that derives a cost or a
             number of dice belongs there, and this package acts on the
             numbers it is given rather than deriving its own.
           </p>
         </article>
+      </section>
+
+      <section id="notes">
+        <h2>Field notes</h2>
+        <p>
+          From the <a href="/mobius-box/">Mobius Box</a> &mdash; what the
+          engine caught, and what it means.
+        </p>
+        {
+          notes.map((post) => (
+            <article>
+              <h3>
+                <a href={`/mobius-box/${post.id}/`}>{post.data.title}</a>
+              </h3>
+              <time datetime={post.data.pubDate.toISOString()}>
+                {post.data.pubDate.toISOString().slice(0, 10)}
+              </time>
+              <p>{post.data.description}</p>
+            </article>
+          ))
+        }
       </section>
 
       <section id="yours">

@@ -18,7 +18,7 @@ test('the six sections are present and in order', async ({ page }) => {
   const ids = await page.locator('main section').evaluateAll((els) =>
     els.map((e) => e.id),
   );
-  expect(ids).toEqual(['hero', 'why', 'today', 'yours', 'needs', 'roadmap']);
+  expect(ids).toEqual(['hero', 'why', 'today', 'notes', 'yours', 'needs', 'roadmap']);
 });
 
 test('what works today names all three engines with install commands', async ({ page }) => {
@@ -31,6 +31,12 @@ test('what works today names all three engines with install commands', async ({ 
   for (const pkg of ['kirby-cost', 'kirby-sheet', 'kirby-combat']) {
     await expect(today).toContainText(`pip install ${pkg}`);
   }
+});
+
+test('field notes are featured with at least one dated entry', async ({ page }) => {
+  const notes = page.locator('section#notes');
+  await expect(notes.locator('article time').first()).toBeVisible();
+  await expect(notes.locator('a[href="/mobius-box/"]').first()).toBeVisible();
 });
 
 test('Hero Designer is stated as a requirement, high up', async ({ page }) => {
