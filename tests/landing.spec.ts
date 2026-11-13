@@ -29,7 +29,7 @@ test('what works today names every engine with its install command', async ({ pa
   // package's own install command instead, so losing any one of the three
   // fails this test specifically.
   // kirby-terrain shares kirby-world's entry: installing kirby-world pulls it in.
-  for (const pkg of ['kirby-cost', 'kirby-sheet', 'kirby-combat', 'kirby-world', 'kirby-dice', 'kirby-campaign']) {
+  for (const pkg of ['kirby-cost', 'kirby-sheet', 'kirby-combat', 'kirby-world', 'kirby-dice', 'kirby-campaign', 'kirby-ai']) {
     await expect(today).toContainText(`pip install ${pkg}`);
   }
 });

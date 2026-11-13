@@ -94,7 +94,7 @@ const notes = (await getCollection('mobiusBox', ({ data }) => !data.draft))
       <section id="today">
         <h2>What works today</h2>
         <p>
-          Seven small engines, each installable on its own. Each one does
+          Eight small packages, each installable on its own. Each one does
           one job and leans on the others for the rest.
         </p>
         <article>
@@ -163,7 +163,19 @@ const notes = (await getCollection('mobiusBox', ({ data }) => !data.draft))
           </p>
           <p>
             Teams and rosters that last from one fight to the next. It's
-            the newest and smallest of the seven.
+            the newest and smallest of the eight.
+          </p>
+        </article>
+        <article>
+          <h3><a href="/docs/kirby-ai/">kirby-ai</a></h3>
+          <p>
+            <code>pip install kirby-ai</code>
+          </p>
+          <p>
+            The part that chooses. A computer-run villain picks from the
+            same menu of legal actions a player sees, and a second model
+            can review that pick before it happens. It never makes a rule;
+            the rules all live in kirby-combat.
           </p>
         </article>
       </section>

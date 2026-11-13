@@ -43,6 +43,7 @@ export default defineConfig({
         { label: 'kirby-terrain', slug: 'docs/kirby-terrain' },
         { label: 'kirby-dice', slug: 'docs/kirby-dice' },
         { label: 'kirby-campaign', slug: 'docs/kirby-campaign' },
+        { label: 'kirby-ai', slug: 'docs/kirby-ai' },
         { label: 'RAW alignment', slug: 'docs/raw-alignment' },
       ],
     }),
