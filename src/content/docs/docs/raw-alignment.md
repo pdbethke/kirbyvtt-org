@@ -167,17 +167,102 @@ attacks, movement, defenses, END, and characteristics.
 
 ---
 
+## Aborting to Dodge
+
+**6E2 p.24** · script: `examples/raw_lazer.py` · **rule and example agree**
+
+**The book's scenarios.** A character with SPD 5 (Phases in Segments 3, 5, 8,
+10 and 12) is attacked in Segment 6 and Aborts to Dodge. That uses up his
+Segment 8 Phase: in Segment 8 he can do nothing, though he still has the
+Dodge's DCV, and he acts again in Segment 10. The page then works through the
+edges. If he's attacked in Segment 5 before his DEX comes up, the Abort spends
+that Segment 5 Phase instead. If he's Holding an Action, he Aborts with it and
+loses nothing more. A SPD 4 character can Abort his Segment 3 Phase in
+Segment 2 to Block. And once a character has acted in a Segment, he can't
+Abort again until the next one.
+
+**What Kirby does with those inputs.** The script runs each case through the
+real turn loop: the attacker announces, the defender is asked, and the engine
+records what follows.
+
+```
+Attacked in Segment 6, Aborts to Dodge   gives up Segment 8; DCV 5+3 there; acts in 10
+Attacked in Segment 5 before his DEX     gives up Segment 5; acts in 8
+Holding his Phase when attacked          uses the Held Phase; still acts in 8
+SPD 4, attacked in Segment 2             Blocks; nothing in Segment 3; attacks in 6
+Attacked back after acting in Segment 5  never asked; no Abort
+```
+
+The book's Held Action example is a Half Move followed by a Held Half Phase.
+The script Holds the whole Phase, which falls under the same sentence of the
+rule.
+
+---
+
+## Adding damage
+
+**6E2 p.99 and p.101** · script: `examples/raw_adding_damage.py` · **rule and example agree**
+
+**The book's scenario.** Maneuvers add damage one Damage Class at a time,
+whatever the kind of damage. A Martial Strike (+2 DC) takes a 3d6 club to
+5d6, and a 1d6 HKA sword to 1½d6. A maneuver that does a different kind of
+damage, like a Killing Strike, adds nothing to a weapon. And on p.99's table a
+Killing Damage DC is a single pip, three of them to the die.
+
+**What Kirby does with those inputs:**
+
+```
+Martial Strike with his Club     5d6
+Martial Strike with his Sword    HKA 1½d6
+Killing Strike                   made barehanded, never added to a weapon
+
+STR on a 1d6 HKA:  STR 5 → 1d6+1   STR 10 → 1½d6   STR 15 → 2d6   STR 20 → 2d6
+```
+
+STR 20 stops at 2d6 because STR can't more than double an attack. That limit
+is a rule (6E1 p.137). The page's broader suggestion that no attack should
+more than double, however the damage is added, is offered as GM guidance, so
+Kirby doesn't enforce it.
+
+**Why this example is here.** Running it found two things. Kirby couldn't use
+a martial maneuver with a weapon at all: a maneuver bought for weapon use was
+quietly made barehanded. And STR was being added to Killing attacks half a
+die at a time, so a 1d6 HKA with STR 5 came out at 1½d6 where the book says
+1d6+1. Both are fixed.
+
+---
+
+## Haymaker
+
+**6E2 p.70** · script: `examples/raw_adding_damage.py` · **rule and example agree**
+
+**The book's scenario.** A character with a Phase in Segment 6 Haymakers his
+Strike. He begins it in Segment 6, and it lands at the very end of Segment 7,
+after everyone in Segment 7 has acted. He could Abort to Block in Segment 7
+first, but then he loses the attack.
+
+**What Kirby does with those inputs.** The Haymaker is begun in Segment 6, and
+the blow lands in Segment 7, after the other fighter's Phase there, at +4 DC.
+Run again with him Aborting to Block in Segment 7, the Haymaker is ruined and
+never lands. While he's winding up he's at -5 DCV (the Combat Maneuvers
+table, p.73).
+
+**Why this example is here.** Kirby used to treat a Haymaker as a bonus for
+"the next attack", and nothing ever applied the bonus, so a Haymaker cost a
+Phase and did nothing.
+
+---
+
 ## What Kirby cannot reproduce yet
 
 Listed so the gaps are visible rather than implied.
 
 | Example | Page | Needs |
 |---|---|---|
-| Aborting to Dodge | 6E2 p.24 | a driver that spends the aborted Phase |
-| Adding damage to a weapon | 6E2 p.101 | turns on a GM ruling rather than a rule; not mechanically reproducible |
+| Combat Skill Levels for damage | 6E2 p.101 | the turn loop to offer spending two CSLs for +1 DC; the arithmetic is in |
 
-Fighting blind used to head this list. It came off when its example started
-running, above.
+Fighting blind, Aborting to Dodge and adding damage to a weapon all used to
+be on this list. Each came off when its example started running, above.
 
 ---
 
