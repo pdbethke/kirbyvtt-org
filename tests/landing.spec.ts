@@ -21,14 +21,15 @@ test('the six sections are present and in order', async ({ page }) => {
   expect(ids).toEqual(['hero', 'why', 'today', 'notes', 'yours', 'needs', 'roadmap']);
 });
 
-test('what works today names all three engines with install commands', async ({ page }) => {
+test('what works today names every engine with its install command', async ({ page }) => {
   const today = page.locator('section#today');
   // "pip install" once, asserted separately from the three package names,
   // was satisfiable by deleting two of the three install blocks — the
   // package names still appear in the <h3>s regardless. Assert each
   // package's own install command instead, so losing any one of the three
   // fails this test specifically.
-  for (const pkg of ['kirby-cost', 'kirby-sheet', 'kirby-combat']) {
+  // kirby-terrain shares kirby-world's entry: installing kirby-world pulls it in.
+  for (const pkg of ['kirby-cost', 'kirby-sheet', 'kirby-combat', 'kirby-world', 'kirby-dice', 'kirby-campaign']) {
     await expect(today).toContainText(`pip install ${pkg}`);
   }
 });

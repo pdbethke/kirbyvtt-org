@@ -93,20 +93,25 @@ const notes = (await getCollection('mobiusBox', ({ data }) => !data.draft))
 
       <section id="today">
         <h2>What works today</h2>
-        <p>Three small, independent engines, each installable on its own.</p>
+        <p>
+          Seven small engines, each installable on its own. Each one does
+          one job and leans on the others for the rest.
+        </p>
         <article>
-          <h3><a href="https://github.com/pdbethke/kirby-cost" rel="noopener noreferrer">kirby-cost</a></h3>
+          <h3><a href="/docs/kirby-cost/">kirby-cost</a></h3>
           <p>
             <code>pip install kirby-cost</code>
           </p>
           <p>
             Reads a HERO 6E build and costs it. Validated against Hero
             Designer: 655 of 655 characters match, every object and every
-            character total.
+            character total. It also prices a Multipower split: how many
+            dice, metres or points of defense a slot gets from the reserve
+            points you put in it.
           </p>
         </article>
         <article>
-          <h3><a href="https://github.com/pdbethke/kirby-sheet" rel="noopener noreferrer">kirby-sheet</a></h3>
+          <h3><a href="/docs/kirby-sheet/">kirby-sheet</a></h3>
           <p>
             <code>pip install kirby-sheet</code>
           </p>
@@ -117,15 +122,48 @@ const notes = (await getCollection('mobiusBox', ({ data }) => !data.draft))
           </p>
         </article>
         <article>
-          <h3><a href="https://github.com/pdbethke/kirby-combat" rel="noopener noreferrer">kirby-combat</a></h3>
+          <h3><a href="/docs/kirby-combat/">kirby-combat</a></h3>
           <p>
             <code>pip install kirby-combat</code>
           </p>
           <p>
-            A pure-Python HERO 6E combat engine, 1,348 tests. Its one
-            dependency is kirby-cost: anything that derives a cost or a
-            number of dice belongs there, and this package acts on the
-            numbers it is given rather than deriving its own.
+            A pure-Python HERO 6E combat engine with over 4,000 tests. It
+            works out whose Phase it is, what each character can legally do,
+            and what happens when they do it, all from the numbers it is
+            given. Anything that derives a cost or a number of dice belongs
+            to kirby-cost.
+          </p>
+        </article>
+        <article>
+          <h3><a href="/docs/kirby-world/">kirby-world</a> and <a href="/docs/kirby-terrain/">kirby-terrain</a></h3>
+          <p>
+            <code>pip install kirby-world</code>
+          </p>
+          <p>
+            Places, and what they're made of. Walls and doors with their own
+            PD, ED and BODY, cover, line of sight, falling, and where each
+            movement mode can actually reach. A place doesn't know there's a
+            fight in it.
+          </p>
+        </article>
+        <article>
+          <h3><a href="/docs/kirby-dice/">kirby-dice</a></h3>
+          <p>
+            <code>pip install kirby-dice</code>
+          </p>
+          <p>
+            Dice, and nothing else. No dependencies, tests that show the
+            dice are fair, and a seed that replays any fight die for die.
+          </p>
+        </article>
+        <article>
+          <h3><a href="/docs/kirby-campaign/">kirby-campaign</a></h3>
+          <p>
+            <code>pip install kirby-campaign</code>
+          </p>
+          <p>
+            Teams and rosters that last from one fight to the next. It's
+            the newest and smallest of the seven.
           </p>
         </article>
       </section>
@@ -192,17 +230,18 @@ const notes = (await getCollection('mobiusBox', ({ data }) => !data.draft))
           front of players.
         </p>
         <p>
-          Terrain that means something in HERO terms: surfaces with their own
-          PD and ED, so a concrete wall and a plywood door don't take a punch
-          the same way. Elevation and concealment that actually move OCV and
-          DCV. Line of sight worked out from where a character is standing,
-          not from a flat grid.
+          Terrain that means something in HERO terms is already in the
+          engines: surfaces with their own PD and ED, so a concrete wall and
+          a plywood door don't take a punch the same way, cover that moves
+          OCV, and line of sight worked out from where a character is
+          standing. What's coming is a board that shows it all.
         </p>
         <p>
           And the parts of the system other tables tend to hand-wave, because
           the engine already does them: mental combat on OMCV and DMCV,
           vehicles with passengers and ramming, a mob resolved as one unit
-          with morale, structures that collapse onto whoever was standing on
+          with morale, grabs that cost both people their DCV, Multipowers
+          whose reserve you can split between slots, structures that collapse onto whoever was standing on
           them, and Presence attacks as a real mechanic rather than
           flavour.
         </p>

@@ -99,19 +99,85 @@ that than quietly match a worked example against its own rule.
 
 ---
 
+## Fighting blind
+
+**6E2 p.9** · script: `examples/raw_orion.py` · **rule and example agree**
+
+**The book's scenario.** A hero is blinded by a Flash. With no Targeting
+Sense left, he's at half OCV and half DCV in hand-to-hand combat, and at
+Range his OCV drops to zero while his DCV is halved. He then spends a Half
+Phase on a Hearing PER Roll against one attacker and makes it. Against that
+one attacker his hand-to-hand DCV is now only -1, and at Range he's back to
+full DCV. Against everyone else, nothing has changed.
+
+The page doesn't give the hero's own CVs, so the script gives him 8 OCV and
+8 DCV. That makes "half" a whole number and keeps the halved and mitigated
+values plainly different.
+
+**What Kirby does with those inputs**, after the PER Roll is made:
+
+```
+vs the one he heard   HTH: OCV 4  DCV 7   │   Range: OCV 4  DCV 8
+vs everyone else      HTH: OCV 4  DCV 4   │   Range: OCV 0  DCV 4
+```
+
+At the start of his next Phase the benefit lapses, and both rows go back to
+the second one until he spends another Half Phase and makes another roll.
+
+**Why this example is here.** It breaks any design that treats "blind" as one
+number. The same character has two different DCVs in the same Segment,
+depending on who's attacking. The mitigated value is a flat -1, not a second
+halving (a second halving gives 2, where the book says 7). And the mitigation
+isn't symmetric: it restores full DCV at Range but not hand-to-hand.
+
+---
+
+## Dividing a Multipower
+
+**6E1 p.404–406** · script: `examples/raw_kerendor_multipower.py` · **rule and example agree**
+
+**The book's scenario.** A character owns a Multipower with a 60-point
+reserve and three variable slots: a Blast, Flight, and Resistant Protection
+at 15 PD / 15 ED (45 Active Points). Each Phase he can divide the reserve
+however he likes, and each slot gets as many levels as its points will buy.
+The page works through several splits, including one where the Flight slot
+carries an Advantage, so its points have to pay for that too.
+
+**What Kirby does with those inputs.** Each line is read back from the
+combat engine's own views of the character's attacks, movement and
+defenses after the split is stated. Nothing in the script prices anything
+itself.
+
+```
+30 Blast / 30 Flight                    Blast 6d6, Flight 30m
+40 Flight / 20 Blast                    Flight 40m, Blast 4d6
+Protection on (45), 15 left             Protection 15/15, and either Flight 15m or Blast 3d6
+10 Flight / 40 Blast / 9 Protection     Flight 10m, Blast 8d6, Protection 3/3
+30 into Flight with +1/4 Advantage      Flight 24m, not 30
+```
+
+A slot holding no points is off: it isn't offered, and nothing it does
+happens.
+
+**Why this example is here.** The engine had the reserve's arithmetic for a
+long time, but nothing ever used it. Every slot either fired at full strength
+or didn't fire at all. Now a split is recorded on the fight's log, priced by
+[kirby-cost](/docs/kirby-cost/), and read everywhere a slot matters:
+attacks, movement, defenses, END, and characteristics.
+
+---
+
 ## What Kirby cannot reproduce yet
 
 Listed so the gaps are visible rather than implied.
 
 | Example | Page | Needs |
 |---|---|---|
-| Fighting an opponent you cannot perceive | 6E2 p.9 / p.127 | the ½ OCV / ½ DCV penalties and their per-opponent mitigation — in progress |
 | Aborting to Dodge | 6E2 p.24 | a driver that spends the aborted Phase |
 | Adding damage to a weapon | 6E2 p.101 | turns on a GM ruling rather than a rule; not mechanically reproducible |
 
-The first is the agreed finish line for Kirby's sense-affecting powers work:
-that feature is not done until the book's own blinded-hero example runs and
-asserts.
+Fighting blind used to head this list. It came off when its example started
+running, above.
 
 ---
 

@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test';
 
 test('each engine has a docs page', async ({ page }) => {
-  for (const slug of ['kirby-cost', 'kirby-sheet', 'kirby-combat']) {
+  for (const slug of ['kirby-cost', 'kirby-sheet', 'kirby-combat', 'kirby-world', 'kirby-terrain', 'kirby-dice', 'kirby-campaign']) {
     const res = await page.goto(`/docs/${slug}/`);
     expect(res?.status(), slug).toBe(200);
     await expect(page.locator('h1')).toContainText(slug);

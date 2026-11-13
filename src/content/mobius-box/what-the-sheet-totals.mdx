@@ -1,0 +1,43 @@
+---
+title: "What the sheet totals"
+description: "Combat was reading the Characteristics section of a character instead of what the character sheet actually totals. Fixing it changed how 325 of 794 characters fight."
+pubDate: 2026-11-13
+draft: false
+---
+
+{/* SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0 */}
+
+This one shipped back in September, and it's the biggest single change the
+combat engine has had, so it's worth writing up even late.
+
+A HERO character's PD isn't always one number in one place. A brick might
+have PD 15 in his Characteristics and another +20 PD bought as a power. On
+his character sheet, the one Hero Designer prints, his PD is 35. The combat
+engine was reading the Characteristics section, so it fought him at 15.
+
+Once we saw it, we measured it properly. Every character in my library, 794
+of them, built two ways and compared. 469 came out identical. 325 fought
+differently, and every one of the 325 had a reason we could name. 319 had
+bought a characteristic as a power that Hero Designer counts toward the
+total. The other 6 had purchases that only apply in their heroic identity,
+and combat had ignored those outright &mdash; one hero with DEX 25 had been
+fighting as his civilian self at DEX 10. The plan going in predicted
+nineteen.
+
+The other direction mattered just as much. A villain with a tail has +20
+STR bought with an "Only With Tail" limitation, and Hero Designer marks
+that purchase as not counting toward his totals. If we'd simply added
+everything up, he'd have punched at 16d6 instead of 12d6 off a STR he
+doesn't really have. The rule I settled on: a limitation is not a limitation
+if it doesn't limit. Hero Designer already records which purchases count,
+so the engine reads that instead of guessing.
+
+Under the hood, a characteristic now has two values. There's the **base**,
+which is what the sheet says and is never written to. And there's what's
+true right now: the base plus whatever is currently being applied, such as
+a Drain, an Aid, or a power that only works some of the time. Keeping the
+base untouched is what lets a character go out to a <code>.hdc</code> file and
+come back unchanged.
+
+The short version is the one we hold everything to now: combat fights the
+character on the sheet.
