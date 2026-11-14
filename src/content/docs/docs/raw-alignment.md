@@ -28,7 +28,7 @@ the engine: if Kirby stops agreeing with a book example, the build goes red.
 
 ## Recovering from being Stunned
 
-**6E2 p.107** · script: `examples/raw_andarra.py` · **rule and example agree**
+**6E2 p.107** · script: the `kirby-combat` examples · **rule and example agree**
 
 **The book's scenario.** A character with DEX 20 and SPD 3 is Stunned by an
 attack in Segment 6. Her next Phase falls in Segment 8, and she must spend it
@@ -71,7 +71,7 @@ example is what caught it — which is the argument for this page.
 
 ## Move By — where the book contradicts itself
 
-**6E2 p.72** · script: `examples/raw_starburst.py` · **the example disagrees with the rule; Kirby follows the rule**
+**6E2 p.72** · script: the `kirby-combat` examples · **the example disagrees with the rule; Kirby follows the rule**
 
 **The rule.** A Move By does half the attacker's STR damage plus one d6 per 10m
 of velocity. The page adds a parenthetical instruction: halve the character's
@@ -101,7 +101,7 @@ that than quietly match a worked example against its own rule.
 
 ## Fighting blind
 
-**6E2 p.9** · script: `examples/raw_orion.py` · **rule and example agree**
+**6E2 p.9** · script: the `kirby-combat` examples · **rule and example agree**
 
 **The book's scenario.** A hero is blinded by a Flash. With no Targeting
 Sense left, he's at half OCV and half DCV in hand-to-hand combat, and at
@@ -134,7 +134,7 @@ isn't symmetric: it restores full DCV at Range but not hand-to-hand.
 
 ## Dividing a Multipower
 
-**6E1 p.404–406** · script: `examples/raw_kerendor_multipower.py` · **rule and example agree**
+**6E1 p.404–406** · script: the `kirby-combat` examples · **rule and example agree**
 
 **The book's scenario.** A character owns a Multipower with a 60-point
 reserve and three variable slots: a Blast, Flight, and Resistant Protection
@@ -169,7 +169,7 @@ attacks, movement, defenses, END, and characteristics.
 
 ## Aborting to Dodge
 
-**6E2 p.24** · script: `examples/raw_lazer.py` · **rule and example agree**
+**6E2 p.24** · script: the `kirby-combat` examples · **rule and example agree**
 
 **The book's scenarios.** A character with SPD 5 (Phases in Segments 3, 5, 8,
 10 and 12) is attacked in Segment 6 and Aborts to Dodge. That uses up his
@@ -201,7 +201,7 @@ rule.
 
 ## Adding damage
 
-**6E2 p.99 and p.101** · script: `examples/raw_adding_damage.py` · **rule and example agree**
+**6E2 p.99 and p.101** · script: the `kirby-combat` examples · **rule and example agree**
 
 **The book's scenario.** Maneuvers add damage one Damage Class at a time,
 whatever the kind of damage. A Martial Strike (+2 DC) takes a 3d6 club to
@@ -234,7 +234,7 @@ die at a time, so a 1d6 HKA with STR 5 came out at 1½d6 where the book says
 
 ## Haymaker
 
-**6E2 p.70** · script: `examples/raw_adding_damage.py` · **rule and example agree**
+**6E2 p.70** · script: the `kirby-combat` examples · **rule and example agree**
 
 **The book's scenario.** A character with a Phase in Segment 6 Haymakers his
 Strike. He begins it in Segment 6, and it lands at the very end of Segment 7,

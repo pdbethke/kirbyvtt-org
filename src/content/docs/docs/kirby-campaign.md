@@ -10,7 +10,7 @@ newest and smallest of the Kirby packages.
 
 ## A team is not a side
 
-A **team** is who you are between fights: a Sentinel on Tuesday is still one
+A **team** is who you are between fights: a team member on Tuesday is still one
 on Wednesday. A **side** is who you're fighting with right now.
 
 They usually agree, and they have to be able to disagree: a schism, a
@@ -21,12 +21,12 @@ they've already been given.
 ```python
 from kirby_campaign import Team, TeamMember, sides_from_teams
 
-sentinels = Team(
-    id="sentinels", name="Sentinels of Dawn", team_type="hero",
-    members=(TeamMember("aurora", "leader"), TeamMember("bulwark")),
-    base_ids=("dawn-spire",),
+heroes = Team(
+    id="test-heroes", name="Test Heroes", team_type="hero",
+    members=(TeamMember("ravel", "leader"), TeamMember("powerlad")),
+    base_ids=("test-base",),
 )
-sides_from_teams([sentinels])
+sides_from_teams([heroes])
 ```
 
 ## The dependency runs one way
