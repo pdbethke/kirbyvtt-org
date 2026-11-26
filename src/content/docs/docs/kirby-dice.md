@@ -28,10 +28,10 @@ one. Record the seed with the fight and it replays die for die.
 from kirby_dice import RandomRoller
 
 roller = RandomRoller()
-fight = [roller.roll_dice(3) for _ in range(40)]
+fight = [roller.roll_dice(3, 6) for _ in range(40)]
 
 replay = RandomRoller(seed=roller.seed)
-assert [replay.roll_dice(3) for _ in range(40)] == fight
+assert [replay.roll_dice(3, 6) for _ in range(40)] == fight
 ```
 
 ## Install
